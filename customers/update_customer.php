@@ -1,6 +1,17 @@
 <?php
 include('../includes/db.php');
 
+// Fetch districts from the database for the dropdown
+$districtQuery = "SELECT id, district FROM district";
+$districtResult = $conn->query($districtQuery);
+$districts = [];
+
+if ($districtResult->num_rows > 0) {
+    while ($row = $districtResult->fetch_assoc()) {
+        $districts[] = $row;
+    }
+}
+
 if (isset($_GET['id'])) {
     $customer_id = $_GET['id'];
 
@@ -23,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $middle_name = $_POST['middle_name'];
     $last_name = $_POST['last_name'];
     $contact_no = $_POST['contact_no'];
-    $district = $_POST['district'];
+    $district_id = $_POST['district']; // Use district_id
 
     // Update query
     $updateSql = "UPDATE customer SET 
@@ -32,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     middle_name = '$middle_name', 
                     last_name = '$last_name', 
                     contact_no = '$contact_no', 
-                    district = '$district' 
+                    district = '$district_id'  -- Update district with ID
                   WHERE id = $customer_id";
 
     if ($conn->query($updateSql) === TRUE) {
@@ -74,7 +85,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <input type="text" id="contact_no" name="contact_no" value="<?php echo $customer['contact_no']; ?>" required>
         <br><br>
         <label for="district">District:</label>
-        <input type="text" id="district" name="district" value="<?php echo $customer['district']; ?>" required>
+        <select name="district" id="district" required>
+            <option value="">Select District</option>
+            <?php
+            // Populate district dropdown
+            foreach ($districts as $district) {
+                echo "<option value='{$district['id']}' " . ($customer['district'] == $district['id'] ? "selected" : "") . ">{$district['district']}</option>";
+            }
+            ?>
+        </select>
         <br><br>
         <button type="submit">Update Customer</button>
     </form>

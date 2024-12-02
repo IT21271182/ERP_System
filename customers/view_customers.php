@@ -1,8 +1,25 @@
 <?php
 include('../includes/db.php');
 
-// Fetch customers from the database
-$sql = "SELECT * FROM customer";
+// Handle search
+$searchQuery = '';
+if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['search'])) {
+    $searchQuery = $_GET['search'];
+    // Join the customer table with the district table to get the district name
+    $sql = "SELECT customer.*, district.district AS district_name
+            FROM customer
+            LEFT JOIN district ON customer.district = district.id
+            WHERE customer.first_name LIKE '%$searchQuery%' 
+            OR customer.last_name LIKE '%$searchQuery%' 
+            OR customer.contact_no LIKE '%$searchQuery%' 
+            OR district.district LIKE '%$searchQuery%'";
+} else {
+    // Default query to fetch all customers and join with the district table
+    $sql = "SELECT customer.*, district.district AS district_name
+            FROM customer
+            LEFT JOIN district ON customer.district = district.id";
+}
+
 $result = $conn->query($sql);
 
 // Handle delete action
@@ -28,6 +45,13 @@ if (isset($_GET['delete'])) {
 <body>
     <h2>Customer List</h2>
 
+    <!-- Search Form -->
+    <form method="GET" action="">
+        <input type="text" name="search" placeholder="Search by name, contact, or district" value="<?php echo htmlspecialchars($searchQuery); ?>">
+        <button type="submit">Search</button>
+        <a href="view_customers.php">Clear</a> <!-- Clear the search -->
+    </form>
+
     <?php if ($result->num_rows > 0): ?>
         <table border="1">
             <thead>
@@ -49,7 +73,7 @@ if (isset($_GET['delete'])) {
                         <td><?php echo $row['middle_name']; ?></td>
                         <td><?php echo $row['last_name']; ?></td>
                         <td><?php echo $row['contact_no']; ?></td>
-                        <td><?php echo $row['district']; ?></td>
+                        <td><?php echo $row['district_name']; ?></td> <!-- Display the district name -->
                         <td>
                             <!-- Update Button -->
                             <form action="update_customer.php" method="GET" style="display: inline;">
