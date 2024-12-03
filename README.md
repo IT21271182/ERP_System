@@ -71,16 +71,16 @@ Follow these steps to set up the project on your local environment:
 
 4. **Start the Server:**
 
-- Launch your server (e.g., start XAMPP or WAMP).
-- Place the project folder in the `htdocs` directory (for XAMPP) or equivalent for your setup.
+ - Launch your server (e.g., start XAMPP or WAMP).
+ - Place the project folder in the `htdocs` directory (for XAMPP) or equivalent for your setup.
 
 5. **Access the Application:**
 
-- Open a browser
-- Navigate to : [http://localhost/erp-system](http://localhost/erp-system).
+ - Open a browser
+ - Navigate to : [http://localhost/erp-system](http://localhost/erp-system).
 
 6. **Verify Functionality:**
 
-- Test customer and item forms for proper validation and functionality.
-Generate reports by selecting date ranges.
+ - Test customer and item forms for proper validation and functionality.
+ - Generate reports by selecting date ranges.
 
