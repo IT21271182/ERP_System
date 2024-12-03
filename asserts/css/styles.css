@@ -1,0 +1,38 @@
+/* styles.css */
+body {
+    background-color: #003366; /* Dark blue background for the entire page */
+    color: white; /* White text to ensure readability on dark blue */
+}
+
+.navbar {
+    background-color: #003366; /* Dark blue navbar */
+}
+
+.table th {
+    background-color: #003366; /* Dark blue table headers */
+    color: white; /* White text for the table headers */
+}
+
+.btn-primary {
+    background-color: #003366; /* Dark blue for primary buttons */
+    border-color: #003366;
+}
+
+.btn-primary:hover {
+    background-color: #002244; /* Darker blue on hover */
+    border-color: #002244;
+}
+
+.btn-secondary {
+    background-color: #00509E; /* Lighter blue for secondary buttons */
+    border-color: #00509E;
+}
+
+.btn-secondary:hover {
+    background-color: #003B73; /* Darker blue on hover */
+    border-color: #003B73;
+}
+
+h2 {
+    color: #003366; /* Dark blue heading */
+}

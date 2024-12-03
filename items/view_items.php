@@ -31,48 +31,79 @@ if (isset($_GET['delete_id'])) {
 }
 ?>
 
-<h2>Items List</h2>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Items</title>
+    <!-- Link to the external styles.css file -->
+    <link href="path/to/styles.css" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <?php include('../includes/header.php'); ?>
 
-<!-- Add Item Button -->
-<a href="add_item.php" class="button">Add new Item</a>
+    <div class="container">
+        <h2 class="text-center mt-4">Items List</h2>
 
-<!-- Search Form -->
-<form method="GET" action="">
-    <input type="text" name="search" placeholder="Search by name, code, or category" value="<?= htmlspecialchars($searchQuery); ?>">
-    <button type="submit">Search</button>
-    <a href="view_items.php">Clear</a> <!-- Clear search -->
-</form>
+        <!-- Add Item Button (Aligned to the Right) -->
+        <div class="d-flex justify-content-end mb-3">
+            <a href="add_item.php" class="btn btn-success">Add New Item</a>
+        </div>
 
-<table border="1">
-    <tr>
-        <th>ID</th>
-        <th>Item Code</th>
-        <th>Category</th>
-        <th>Subcategory</th>
-        <th>Name</th>
-        <th>Quantity</th>
-        <th>Unit Price</th>
-        <th>Actions</th>
-    </tr>
-    <?php if (mysqli_num_rows($result) > 0): ?>
-        <?php while ($row = mysqli_fetch_assoc($result)) { ?>
-            <tr>
-                <td><?= $row['id']; ?></td>
-                <td><?= $row['item_code']; ?></td>
-                <td><?= $row['item_category']; ?></td>
-                <td><?= $row['item_subcategory']; ?></td>
-                <td><?= $row['item_name']; ?></td>
-                <td><?= $row['quantity']; ?></td>
-                <td><?= $row['unit_price']; ?></td>
-                <td>
-                    <a href="update_item.php?id=<?= $row['id']; ?>">Update</a>
-                    <a href="?delete_id=<?= $row['id']; ?>" onclick="return confirm('Are you sure?')">Delete</a>
-                </td>
-            </tr>
-        <?php } ?>
-    <?php else: ?>
-        <tr>
-            <td colspan="8">No items found.</td>
-        </tr>
-    <?php endif; ?>
-</table>
+        <!-- Search Form -->
+        <div class="row justify-content-center mb-3">
+            <div class="col-md-8">
+                <form method="GET" action="" class="form-inline">
+                    <input type="text" name="search" class="form-control w-75" placeholder="Search by name, code, or category" value="<?= htmlspecialchars($searchQuery); ?>">
+                    <button type="submit" class="btn btn-primary ml-2">Search</button>
+                    <a href="view_items.php" class="btn btn-secondary ml-2">Clear</a>
+                </form>
+            </div>
+        </div>
+
+        <?php if (mysqli_num_rows($result) > 0): ?>
+            <table class="table table-bordered table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Item Code</th>
+                        <th>Category</th>
+                        <th>Subcategory</th>
+                        <th>Name</th>
+                        <th>Quantity</th>
+                        <th>Unit Price</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php while ($row = mysqli_fetch_assoc($result)) { ?>
+                        <tr>
+                            <td><?= $row['id']; ?></td>
+                            <td><?= $row['item_code']; ?></td>
+                            <td><?= $row['item_category']; ?></td>
+                            <td><?= $row['item_subcategory']; ?></td>
+                            <td><?= $row['item_name']; ?></td>
+                            <td><?= $row['quantity']; ?></td>
+                            <td><?= $row['unit_price']; ?></td>
+                            <td>
+                                <a href="update_item.php?id=<?= $row['id']; ?>" class="btn btn-info btn-sm">Update</a>
+                                <a href="?delete_id=<?= $row['id']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this item?');">Delete</a>
+                            </td>
+                        </tr>
+                    <?php } ?>
+                </tbody>
+            </table>
+        <?php else: ?>
+            <p class="text-center">No items found.</p>
+        <?php endif; ?>
+    </div>
+
+    <!-- Bootstrap JS, Popper.js, and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

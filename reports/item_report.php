@@ -24,29 +24,41 @@ $items = $result->fetch_all(MYSQLI_ASSOC);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Item Report</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <h2>Item Report</h2>
+    <?php include('../includes/header.php'); ?>
 
-    <table border="1">
-        <thead>
-            <tr>
-                <th>Item Name</th>
-                <th>Item Category</th>
-                <th>Item Sub-Category</th>
-                <th>Total Quantity</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($items as $item): ?>
+    <div class="container">
+        <h2 class="text-center mt-4">Report - Item Details</h2>
+
+        <!-- Table to display items report -->
+        <table class="table table-bordered table-striped mt-4 ">
+            <thead class="thead-dark">
                 <tr>
-                    <td><?= $item['Item_Name'] ?></td>
-                    <td><?= $item['Item_Category'] ?></td>
-                    <td><?= $item['Item_Sub_Category'] ?></td>
-                    <td><?= $item['Total_Quantity'] ?></td>
+                    <th>Item Name</th>
+                    <th>Item Category</th>
+                    <th>Item Sub-Category</th>
+                    <th>Total Quantity</th>
                 </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                <?php foreach ($items as $item): ?>
+                    <tr>
+                        <td><?= $item['Item_Name'] ?></td>
+                        <td><?= $item['Item_Category'] ?></td>
+                        <td><?= $item['Item_Sub_Category'] ?></td>
+                        <td><?= $item['Total_Quantity'] ?></td>
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Bootstrap JS, Popper.js, and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.0/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
