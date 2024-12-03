@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $middle_name = $_POST['middle_name'];
     $last_name = $_POST['last_name'];
     $contact_no = $_POST['contact_no'];
-    $district = $_POST['district'];
+    $district_name = $_POST['district'];  // This is the district name
 
     // Basic validation
     if (empty($title)) { $titleErr = "Title is required."; }
@@ -20,12 +20,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (empty($last_name)) { $lastNameErr = "Last name is required."; }
     if (empty($contact_no)) { $contactNoErr = "Contact number is required."; }
     if (!preg_match("/^[0-9]{10}$/", $contact_no)) { $contactNoErr = "Invalid contact number."; }
-    if (empty($district)) { $districtErr = "District is required."; }
+    if (empty($district_name)) { $districtErr = "District is required."; }
+
+    // Fetch district ID based on district name
+    if (empty($districtErr)) {
+        $districtQuery = "SELECT id FROM district WHERE district = '$district_name' LIMIT 1";
+        $districtResult = $conn->query($districtQuery);
+
+        if ($districtResult->num_rows > 0) {
+            $districtRow = $districtResult->fetch_assoc();
+            $district_id = $districtRow['id'];  // District ID
+        } else {
+            $districtErr = "Invalid district selected.";  // Handle case if district is not found
+        }
+    }
 
     // Insert into database if no errors
     if (empty($titleErr) && empty($firstNameErr) && empty($lastNameErr) && empty($contactNoErr) && empty($districtErr)) {
         $sql = "INSERT INTO customer (title, first_name, middle_name, last_name, contact_no, district) 
-                VALUES ('$title', '$first_name', '$middle_name', '$last_name', '$contact_no', '$district')";
+                VALUES ('$title', '$first_name', '$middle_name', '$last_name', '$contact_no', '$district_id')";
         if ($conn->query($sql) === TRUE) {
             echo "Customer registered successfully.";
             header("Location: view_customers.php");
@@ -35,14 +48,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 
-// Fetch districts from the database
-$districtQuery = "SELECT district FROM district";
+// Fetch districts from the database for dropdown
+$districtQuery = "SELECT id, district FROM district";
 $districtResult = $conn->query($districtQuery);
 $districts = [];
 
 if ($districtResult->num_rows > 0) {
     while ($row = $districtResult->fetch_assoc()) {
-        $districts[] = $row['district'];
+        $districts[] = $row;  // Fetch district ID and name
     }
 }
 ?>
@@ -218,8 +231,8 @@ if ($districtResult->num_rows > 0) {
                 <select name="district" class="form-control">
                     <option value="">Select District</option>
                     <?php
-                        foreach ($districts as $districtName) {
-                            echo "<option value='$districtName' " . ($district == $districtName ? "selected" : "") . ">$districtName</option>";
+                        foreach ($districts as $district) {
+                            echo "<option value='" . $district['district'] . "' " . ($district_name == $district['district'] ? "selected" : "") . ">" . $district['district'] . "</option>";
                         }
                     ?>
                 </select>

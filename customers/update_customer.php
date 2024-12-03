@@ -121,7 +121,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         .btn-submit {
-            background-color: ##007bff;
+            background-color: #007bff;
             color: white;
             border-radius: 8px;
             padding: 10px 15px;
